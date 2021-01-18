@@ -265,11 +265,11 @@ function BoardManager() {
 
         function RemoveUserItem() {
             let inviteUserItem = document.querySelectorAll('.invite-user__item_remove');
-        
+
             for (let i = 0; i < inviteUserItem.length; i++) {
                 let item = inviteUserItem[i];
                 let userItem = item.parentNode;
-        
+
                 item.addEventListener('click', function () {
                     userItem.remove();
                 })
@@ -281,9 +281,9 @@ function BoardManager() {
 function NavigationBoard() {
     let disclosureNavigation = new ControlMenu();
     let controlSubmenu = new ControlSubmenu();
-    
+
     ManagementActive();
-    
+
     function ControlMenu() {
         let that = this;
         let headerBurger = document.querySelector('.header__burger');
@@ -294,16 +294,16 @@ function NavigationBoard() {
         let hideWidth = navIcon.offsetWidth;
         let parentNavigation = navigationList.parentNode;
         let showWidth = navigationList.offsetWidth;
-    
+
         inviteBoard.style.marginLeft = hideWidth + 'px';
-    
+
         headerBurger.addEventListener('click', ToggleMenu);
-    
+
         function ToggleMenu() {
             that.Enable(parentNavigation.offsetWidth < showWidth);
             controlSubmenu.Enable(true);
         }
-        
+
         this.Enable = function(isShow) {
             let width = isShow ? showWidth : hideWidth;
 
@@ -326,77 +326,84 @@ function NavigationBoard() {
         let footerHeight = navFooter.offsetHeight;
 
         navHeader.addEventListener('click', Toggle);
-        
+
         function Toggle() {
             that.Enable(navInner.offsetHeight > headerHeight);
             disclosureNavigation.Enable(true);
         }
-        
+
         this.Enable = function(isHide) {
             navInner.style.height = (isHide ? headerHeight : headerHeight + footerHeight) +'px';
             if(isHide) itemArrow.classList.remove('rotateIcon');
             else itemArrow.classList.add('rotateIcon');
         }
     }
-    
+
     function ManagementActive() {
         let manage = document.querySelector('.manage');
         let workflows = document.querySelector('.workflows');
         let user = document.querySelector('.user');
-        
+        let workflowsbutton = document.querySelector('.table-workflows__button');
+
         manage.addEventListener('click', function () {
-            ChangeContent('block', 'none', 'none');
+            ChangeContent('block', 'none', 'none', 'none');
         });
-        
+
+        workflowsbutton.addEventListener('click', function () {
+            ChangeContent('none', 'none', 'none', 'block');
+        });
+
         workflows.addEventListener('click', function () {
-            ChangeContent('none', 'block', 'none');
+            ChangeContent('none', 'block', 'none', 'none');
         });
-        
+
         user.addEventListener('click', function () {
-            ChangeContent('none', 'none', 'block');
+            ChangeContent('none', 'none', 'block', 'none');
         });
-        
-        function ChangeContent(manageUse, workUse, inviteUse) {
+
+        function ChangeContent(manageUse, workUse, inviteUse, boardUse) {
             let management = document.querySelector('.management');
             let inviteContainer = document.querySelector('.invite-board__container');
             let tableWorkflows = document.querySelector('.table-workflows');
-            
+            let board = document.querySelector('.board');
+
             management.style.display = manageUse;
-            tableWorkflows.style.display = workUse; 
+            tableWorkflows.style.display = workUse;
             inviteContainer.style.display = inviteUse;
+            board.style.display = boardUse;
         }
     }
 }
 
 function OpenModalWindow() {
     UserMenuHeader();
-    
+
     function UserMenuHeader() {
         let user = document.querySelector('.header__headline_user');
         let userMenu = document.querySelector('.usermenu');
-    
+
         user.addEventListener('click', function() {
             showPanel();
         });
-    
+
         function showPanel() {
             visibleLocation('1', 'visible');
-    
+
             document.body.addEventListener('click', eventHideLocation);
         }
-    
+
         function eventHideLocation(e) {
             if(!e.target.classList.contains('header__headline_user') && !e.target.closest('.usermenu')) {
                 hidePanel();
             }
         }
-    
+
         function hidePanel() {
             visibleLocation('0', 'none');
-    
+
             document.body.removeEventListener('click', eventHideLocation);
         }
-    
+
         function visibleLocation(opacity, pointerEvents) {
             userMenu.style.opacity = opacity;
             userMenu.style.pointerEvents = pointerEvents;
@@ -411,30 +418,30 @@ function OpenModalWindow() {
 
         for (let i = 0; i < tableItem.length; i++) {
             let item = tableItem[i];
-            
+
             item.addEventListener('click', function() {
                 showPanel();
             });
         }
-        
+
         function showPanel() {
             visibleLocation('translateX(-15px)');
-        
+
             document.body.addEventListener('click', eventHideLocation);
         }
-        
+
         function eventHideLocation(e) {
             if(!e.target.classList.contains('table__content') && !e.target.closest('.window-manage')) {
                 hidePanel();
             }
         }
-        
+
         function hidePanel() {
             visibleLocation('translateX(342px)');
-        
+
             document.body.removeEventListener('click', eventHideLocation);
         }
-        
+
         function visibleLocation(translate) {
             wndowManage.style.transform = translate;
         }
@@ -448,7 +455,7 @@ function OpenModalWindow() {
 
         for (let i = 0; i < tableItem.length; i++) {
             let item = tableItem[i];
-            
+
             item.addEventListener('click', function () {
                 showPanel();
             });
@@ -456,22 +463,22 @@ function OpenModalWindow() {
 
         function showPanel() {
             visibleLocation('translateX(0)');
-        
+
             document.body.addEventListener('click', eventHideLocation);
         }
-        
+
         function eventHideLocation(e) {
             if(!e.target.classList.contains('table-workflows__item_info') && !e.target.closest('.window-workFlows')) {
                 hidePanel();
             }
         }
-        
+
         function hidePanel() {
             visibleLocation('translateX(407px)');
-        
+
             document.body.removeEventListener('click', eventHideLocation);
         }
-        
+
         function visibleLocation(translate) {
             windowWorkFlows.style.transform = translate;
         }
@@ -493,7 +500,7 @@ function HeaderActions() {
             item.addEventListener('click',  function () {
                 let attrSelectItem = item.getAttribute('class').replace('header__mode_item ','');
                 let selectText = item.innerText;
-                
+
                 modeElem.setAttribute('class', 'header__mode_elem');
                 modeElem.classList.add(attrSelectItem);
                 modeElem.innerHTML = selectText;
@@ -503,7 +510,7 @@ function HeaderActions() {
 
         modeElem.addEventListener('click', function () {
             let modeWrapper = document.querySelector('.header__mode-wrapper');
-            
+
             modeWrapper.style.display = 'block';
         });
     }
@@ -533,7 +540,7 @@ function HeaderActions() {
 
 //     for (let i = 0; i < itemBoard.length; i++) {
 //         let item = itemBoard[i];
-        
+
 //         item.addEventListener('dragend', function (e) {
 //             item.style.top = e.pageX + 'px';
 //             item.style.left = e.pagey + 'px';
